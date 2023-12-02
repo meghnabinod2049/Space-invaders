@@ -1,0 +1,37 @@
+import tkinter
+
+window=tkinter.Tk()
+window.title("Plagiarism Checker")
+
+
+
+text_check=tkinter.Checkbutton(window,text="Text")
+text_check.grid(row=0,column=0)
+file_check=tkinter.Checkbutton(window,text="File")
+file_check.grid(row=1,column=0)
+
+text_1=tkinter.Label(window,text="Text1:")
+text_1.grid(row=2,column=0)
+text_1_entry=tkinter.Entry(window)
+text_1_entry.grid(row=3,column=6)
+
+text_2=tkinter.Label(window,text="Text2: ")
+text_2.grid(row=4,column=0)
+text_2_entry=tkinter.Entry(window)
+text_2_entry.grid(row=5,column=6)
+
+check_button=tkinter.Button(window,text="Check")
+check_button.grid(row=6,column= 15,padx=20,pady=20)
+
+attach_button=tkinter.Button(window,text="Attatch txt files")
+attach_button.grid(row=7,column= 15,padx=20,pady=20)
+
+disp=tkinter.Text(window,width=50,height=50)
+disp.grid(row=8,column=15)
+
+
+
+
+
+window.mainloop()
+
