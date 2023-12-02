@@ -1,37 +1,125 @@
-import tkinter
-
-window=tkinter.Tk()
-window.title("Plagiarism Checker")
-
+import tkinter as tk
+from tkinter import filedialog
+from difflib import SequenceMatcher
 
 
-text_check=tkinter.Checkbutton(window,text="Text")
-text_check.grid(row=0,column=0)
-file_check=tkinter.Checkbutton(window,text="File")
-file_check.grid(row=1,column=0)
+locs = []
 
-text_1=tkinter.Label(window,text="Text1:")
-text_1.grid(row=2,column=0)
-text_1_entry=tkinter.Entry(window)
-text_1_entry.grid(row=3,column=6)
+def plagiarised(text1, text2):
+    match = SequenceMatcher(None, text1, text2)
+    result = match.ratio() * 100
+    return str(result)
 
-text_2=tkinter.Label(window,text="Text2: ")
-text_2.grid(row=4,column=0)
-text_2_entry=tkinter.Entry(window)
-text_2_entry.grid(row=5,column=6)
+def check(root):  
+    
+    selection = radio_var.get()
 
-check_button=tkinter.Button(window,text="Check")
-check_button.grid(row=6,column= 15,padx=20,pady=20)
+    if selection == 1:  
+        text1 = entry1.get()
+        text2 = entry2.get()
+        plag = plagiarised(text1, text2)
+        result_label.config(text="Plagiarised content: " + plag)
+    else:  
+        result_labels = []  
+        for i in range(len(locs) - 1):
+            for j in range(i + 1, len(locs)):
+                
+                with open(locs[i]) as first_file, open(locs[j]) as second_file:
+                    
+                    file1 = first_file.read()
+                    file2 = second_file.read()
 
-attach_button=tkinter.Button(window,text="Attatch txt files")
-attach_button.grid(row=7,column= 15,padx=20,pady=20)
+                    
+                    similarity_ratio = SequenceMatcher(None, file1, file2).ratio()
 
-disp=tkinter.Text(window,width=50,height=50)
-disp.grid(row=8,column=15)
+                    
+                    similarity_percentage = int(similarity_ratio * 100)
+
+                    
+                    result = "Similarity between File " + str(i + 1) + " and File " + str(j + 1) + ": " + str(
+                        similarity_percentage) + "%"
+                    result_labels.append(result)  
+        locs.clear()
+       
+
+        
+        result_text.delete(1.0, tk.END)  
+        for res in result_labels:
+            result_text.insert(tk.END, res + '\n')  
+
+def browse_files():
+    
+    files = filedialog.askopenfilenames(filetypes=[("Text Files", "*.txt")])
+    
+    if files:
+        locs.extend(files)
+        file_paths = "\n".join(files)
+        files_label.config(text="Selected Files:\n" + file_paths)
+    else:
+        files_label.config(text="No files selected.")
+
+def radio_selection():
+    selection = radio_var.get()
+
+    if selection == 1:  
+        entry1.config(state="normal")
+        entry2.config(state="normal")
+        attach_button.config(state="disabled")
+    else:  # File option selected
+        entry1.config(state="disabled")
+        entry2.config(state="disabled")
+        attach_button.config(state="normal")
 
 
+root = tk.Tk()
+root.title("Plagiarism Checker")
+root.geometry("800x600")
 
 
+heading_label = tk.Label(root, text="PLAGIARISM CHECKER ", font=("Arial", 25, "bold"), pady=10)
+heading_label.pack()
+
+
+radio_var = tk.IntVar()
+text_radio = tk.Radiobutton(root, text="Text", font=("Arial", 15, "bold"), variable=radio_var, value=1, command=radio_selection)
+text_radio.pack(anchor="w", padx=20)
+file_radio = tk.Radiobutton(root, text="File", font=("Arial", 15, "bold"), variable=radio_var, value=2, command=radio_selection)
+file_radio.pack(anchor="w", padx=20)
+
+
+text_radio.select()
+
+
+label1 = tk.Label(root, text="Text 1", font=("Arial", 16))
+label1.pack(anchor="w", padx=20)
+entry1 = tk.Entry(root, font=("Arial", 12))
+entry1.pack(anchor="w", padx=20)
+
+
+label2 = tk.Label(root, text="Text 2", font=("Arial", 16))
+label2.pack(anchor="w", padx=20)
+entry2 = tk.Entry(root, font=("Arial", 12))
+entry2.pack(anchor="w", padx=20)
+
+
+check_button = tk.Button(root, text="Check", font=("Arial", 15, "bold"), command=lambda: check(root))
+check_button.pack(pady=10)
+
+
+attach_button = tk.Button(root, text="Attach .txt Files", command=browse_files, state="disabled")
+attach_button.pack(pady=10)
+
+
+files_label = tk.Label(root, text="", font=("Arial", 12), wraplength=300, justify="left")
+files_label.pack()
+
+
+result_label = tk.Label(root, text="", font=("Arial", 12))
+result_label.pack()
+
+
+result_text = tk.Text(root, font=("Arial", 12), height=10, width=60)
+result_text.pack()
 
 window.mainloop()
 
