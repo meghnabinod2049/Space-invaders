@@ -1,1 +1,1 @@
-# Space-invaders
+# Plagiarism checker
