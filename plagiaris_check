@@ -10,7 +10,7 @@ def plagiarised(text1, text2):
     result = match.ratio() * 100
     return str(result)
 
-def check(root):  
+def check(gui):  
     
     selection = radio_var.get()
 
@@ -71,55 +71,55 @@ def radio_selection():
         attach_button.config(state="normal")
 
 
-root = tk.Tk()
-root.title("Plagiarism Checker")
-root.geometry("800x600")
+gui = tk.Tk()
+gui.title("Plagiarism Checker")
+gui.geometry("800x600")
 
 
-heading_label = tk.Label(root, text="PLAGIARISM CHECKER ", font=("Arial", 25, "bold"), pady=10)
+heading_label = tk.Label(gui, text="PLAGIARISM CHECKER ", font=("Arial", 25, "bold"), pady=10)
 heading_label.pack()
 
 
 radio_var = tk.IntVar()
-text_radio = tk.Radiobutton(root, text="Text", font=("Arial", 15, "bold"), variable=radio_var, value=1, command=radio_selection)
+text_radio = tk.Radiobutton(gui, text="Text", font=("Arial", 15, "bold"), variable=radio_var, value=1, command=radio_selection)
 text_radio.pack(anchor="w", padx=20)
-file_radio = tk.Radiobutton(root, text="File", font=("Arial", 15, "bold"), variable=radio_var, value=2, command=radio_selection)
+file_radio = tk.Radiobutton(gui, text="File", font=("Arial", 15, "bold"), variable=radio_var, value=2, command=radio_selection)
 file_radio.pack(anchor="w", padx=20)
 
 
 text_radio.select()
 
 
-label1 = tk.Label(root, text="Text 1", font=("Arial", 16))
+label1 = tk.Label(gui, text="Text 1", font=("Arial", 16))
 label1.pack(anchor="w", padx=20)
-entry1 = tk.Entry(root, font=("Arial", 12))
+entry1 = tk.Entry(gui, font=("Arial", 12))
 entry1.pack(anchor="w", padx=20)
 
 
-label2 = tk.Label(root, text="Text 2", font=("Arial", 16))
+label2 = tk.Label(gui, text="Text 2", font=("Arial", 16))
 label2.pack(anchor="w", padx=20)
-entry2 = tk.Entry(root, font=("Arial", 12))
+entry2 = tk.Entry(gui, font=("Arial", 12))
 entry2.pack(anchor="w", padx=20)
 
 
-check_button = tk.Button(root, text="Check", font=("Arial", 15, "bold"), command=lambda: check(root))
+check_button = tk.Button(gui, text="Check", font=("Arial", 15, "bold"), command=lambda: check(gui))
 check_button.pack(pady=10)
 
 
-attach_button = tk.Button(root, text="Attach .txt Files", command=browse_files, state="disabled")
+attach_button = tk.Button(gui, text="Attach .txt Files", command=browse_files, state="disabled")
 attach_button.pack(pady=10)
 
 
-files_label = tk.Label(root, text="", font=("Arial", 12), wraplength=300, justify="left")
+files_label = tk.Label(gui, text="", font=("Arial", 12), wraplength=300, justify="left")
 files_label.pack()
 
 
-result_label = tk.Label(root, text="", font=("Arial", 12))
+result_label = tk.Label(gui, text="", font=("Arial", 12))
 result_label.pack()
 
 
-result_text = tk.Text(root, font=("Arial", 12), height=10, width=60)
+result_text = tk.Text(gui, font=("Arial", 12), height=10, width=60)
 result_text.pack()
 
-window.mainloop()
+gui.mainloop()
 
